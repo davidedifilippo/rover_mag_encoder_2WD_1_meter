@@ -3,19 +3,22 @@
 const int drive_distance = 100;   // cm
 const int motor_power = 200;      // 0-255
 const int motor_offset = 5;       // Diff. when driving straight
-const int wheel_d = 60;           // Wheel diameter (mm)
+const int wheel_d = 65;           // Wheel diameter (mm)
 const float wheel_c = PI * wheel_d; // Wheel circumference (mm)
-const int counts_per_rev = 384;   // (4 pairs N-S) * (48:1 gearbox) * (2 falling/rising edges) = 384
+const int counts_per_rev = 384;   // (4 pairs N-S) * (10:1 gearbox) * (2 falling/rising edges) = 160 pulse
 
 // Pins
-const int enc_l_pin = 2;          // Motor A
-const int enc_r_pin = 3;          // Motor B
+const int enc_l_pin = 2;          // encoder Motor A 
+const int enc_r_pin = 3;          // encoder Motor B
+
 const int pwma_pin = 5;
-const int ain1_pin = 9;
-const int ain2_pin = 4;
+const int ain1_pin = 9;  //piedini di controllo direzione marcia motore A (complementari sempre se in marcia)
+const int ain2_pin = 4;  //piedini di controllo direzione marcia motore A (complementari sempre se in marcia)
+
 const int pwmb_pin = 6;
-const int bin1_pin = 7;
-const int bin2_pin = 8;
+const int bin1_pin = 7; //piedini di controllo direzione marcia motore B (complementari sempre se in marcia)
+const int bin2_pin = 8; //piedini di controllo direzione marcia motore B (complementari sempre se in marcia)
+
 const int stby_pin = 10;
 
 // Globals
@@ -30,17 +33,20 @@ void setup() {
   // Set up pins
   pinMode(enc_l_pin, INPUT_PULLUP);
   pinMode(enc_r_pin, INPUT_PULLUP);
+  
   pinMode(pwma_pin, OUTPUT);
   pinMode(ain1_pin, OUTPUT);
   pinMode(ain2_pin, OUTPUT);
+  
   pinMode(pwmb_pin, OUTPUT);
   pinMode(bin1_pin, OUTPUT);
   pinMode(bin2_pin, OUTPUT);
+  
   pinMode(stby_pin, OUTPUT);
 
   // Set up interrupts
-  attachInterrupt(digitalPinToInterrupt(enc_l_pin), countLeft, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(enc_r_pin), countRight, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(enc_l_pin), countLeft, CHANGE); //risoluzione migliore 
+  attachInterrupt(digitalPinToInterrupt(enc_r_pin), countRight, CHANGE); //risoluzione mogliore
 
   // Drive straight
   delay(1000);
