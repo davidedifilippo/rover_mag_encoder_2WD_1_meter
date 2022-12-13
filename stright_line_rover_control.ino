@@ -5,7 +5,7 @@ const int motor_power = 200;      // 0-255
 const int motor_offset = 5;       // Diff. when driving straight
 const int wheel_d = 65;           // Wheel diameter (mm)
 const float wheel_c = PI * wheel_d; // Wheel circumference (mm)
-const int counts_per_rev = 384;   // (4 pairs N-S) * (10:1 gearbox) * (2 falling/rising edges) = 160 pulse
+const int counts_per_rev = 160;   // (4 pairs N-S) * (10:1 gearbox) * (2 falling/rising edges) = 160 pulse
 
 // Pins
 const int enc_l_pin = 2;          // encoder Motor A 
