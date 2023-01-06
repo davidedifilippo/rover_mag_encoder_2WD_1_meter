@@ -25,11 +25,26 @@ const int stby_pin = 10;
 volatile unsigned long enc_l = 0;
 volatile unsigned long enc_r = 0;
 
+unsigned long num_ticks_l;
+unsigned long num_ticks_r;
+
+ // Used to determine which way to turn to adjust
+unsigned long diff_l;
+unsigned long diff_r;
+
+// Remember previous encoder counts
+unsigned long enc_l_prev = 0;
+unsigned long enc_r_prev = 0;
+
+// Calculate target number of ticks
+float num_rev = (dist * 10) / wheel_c;  // Convert to mm
+unsigned long target_count = num_rev * counts_per_rev;
+
 void setup() {
 
   // Debug
   Serial.begin(9600);
-
+  
   // Set up pins
   pinMode(enc_l_pin, INPUT_PULLUP);
   pinMode(enc_r_pin, INPUT_PULLUP);
@@ -50,6 +65,16 @@ void setup() {
 
   // Drive straight
   delay(1000);
+  // Debug info
+  
+  Serial.print("Driving for ");
+  Serial.print(dist);
+  Serial.print(" cm (");
+  Serial.print(target_count);
+  Serial.print(" ticks) at ");
+  Serial.print(power);
+  Serial.println(" motor power");
+  
   enableMotors(true);
   driveStraight(drive_distance, motor_power);
 }
@@ -59,38 +84,6 @@ void loop() {
 }
 
 void driveStraight(float dist, int power) {
-
-  unsigned long num_ticks_l;
-  unsigned long num_ticks_r;
-
-  // Set initial motor power
-  int power_l = motor_power;
-  int power_r = motor_power;
-
-  // Used to determine which way to turn to adjust
-  unsigned long diff_l;
-  unsigned long diff_r;
-
-  // Reset encoder counts
-  enc_l = 0;
-  enc_r = 0;
-
-  // Remember previous encoder counts
-  unsigned long enc_l_prev = enc_l;
-  unsigned long enc_r_prev = enc_r;
-
-  // Calculate target number of ticks
-  float num_rev = (dist * 10) / wheel_c;  // Convert to mm
-  unsigned long target_count = num_rev * counts_per_rev;
-  
-  // Debug
-  Serial.print("Driving for ");
-  Serial.print(dist);
-  Serial.print(" cm (");
-  Serial.print(target_count);
-  Serial.print(" ticks) at ");
-  Serial.print(power);
-  Serial.println(" motor power");
 
   // Drive until one of the encoders reaches desired count
   while ( (enc_l < target_count) && (enc_r < target_count) ) {
