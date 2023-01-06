@@ -84,6 +84,9 @@ void loop() {
 }
 
 void driveStraight(float dist, int power) {
+ 
+ int power_l = power; //initial value is the same
+ int power_r = power;
 
   // Drive until one of the encoders reaches desired count
   while ( (enc_l < target_count) && (enc_r < target_count) ) {
