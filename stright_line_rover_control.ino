@@ -77,7 +77,7 @@ void setup() {
  
  //Start
   enableMotors(true);
-  drive(motor_power, motor_power);
+  driveStraight(float dist, int motor_power);
   brake();
   enableMotors(false);
 }
