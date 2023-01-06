@@ -74,9 +74,12 @@ void setup() {
   Serial.print(" ticks) at ");
   Serial.print(power);
   Serial.println(" motor power");
-  
+ 
+ //Start
   enableMotors(true);
-  driveStraight(drive_distance, motor_power);
+  drive(motor_power, motor_power);
+  brake();
+  enableMotors(false);
 }
 
 void loop() {
